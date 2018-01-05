@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class PostAnalyzer {
 
     public static List<String> generateKeywords(FBPost post, int vectorLen) throws Exception {
-        String message = post.getMessage();
+        String message = post.getMsg();
         String cleanText = prepareMessage(cleanText(message));
         return mkSortedKeywordsList(cleanText, vectorLen);
     }

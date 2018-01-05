@@ -1,12 +1,20 @@
 package com.wedt.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.time.LocalDateTime;
+
 public class FBPost {
     private String id;
-    private String message;
+    @SerializedName("message")
+    private String msg;
+    @SerializedName("updated_time")
+    private LocalDateTime date;
 
-    public FBPost(String id, String message) {
+    public FBPost(String id, String message, LocalDateTime date) {
         this.id = id;
-        this.message = message;
+        this.msg = message;
+        this.date = date;
     }
 
     public String getId() {
@@ -17,19 +25,28 @@ public class FBPost {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String msg) {
-        this.message = msg;
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     @Override
     public String toString() {
         return "FBPost{" +
                 "id='" + id + '\'' +
-                ", message='" + message + '\'' +
+                ", msg='" + msg + '\'' +
+                ", date=" + date +
                 '}';
     }
 }
