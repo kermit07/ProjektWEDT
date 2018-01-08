@@ -5,4 +5,5 @@ public class Config {
 
     public static final int MIN_REASONABLE_WORD_LENGTH = 3;
     public static final double LEVENSHTEIN_MIN = 5.0;
+    public static final int VECTOR_LIMIT = 100;
 }

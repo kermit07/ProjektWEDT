@@ -33,7 +33,6 @@ public class SynonymUtils {
         try {
             return database.getSynsets(word);
         } catch (Exception e) {
-            System.out.println("Failed to find synset.");
         }
         return null;
     }

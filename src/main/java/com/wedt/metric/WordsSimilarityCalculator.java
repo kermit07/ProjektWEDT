@@ -3,10 +3,10 @@ package com.wedt.metric;
 import com.wedt.app.Config;
 import info.debatty.java.stringsimilarity.Levenshtein;
 
-public class WordsSimilarityCalculator extends SimilarityCalculator<String, String> {
+public class WordsSimilarityCalculator extends SimilarityCalculator<String, Double> {
 
     @Override
-    double calcSimilarity(String s1, String s2) {
+    public Double calcSimilarity(String s1, String s2) {
         if (s1.length() < Config.MIN_REASONABLE_WORD_LENGTH || s2.length() < Config.MIN_REASONABLE_WORD_LENGTH)
             return 0.0;
         if (s2.length() >= Config.LEVENSHTEIN_MIN)

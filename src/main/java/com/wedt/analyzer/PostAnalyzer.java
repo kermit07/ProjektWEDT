@@ -1,5 +1,6 @@
 package com.wedt.analyzer;
 
+import com.wedt.app.Config;
 import com.wedt.model.FBPost;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -16,10 +17,10 @@ import java.util.stream.Collectors;
 
 public class PostAnalyzer {
 
-    public static List<String> generateKeywords(FBPost post, int vectorLen) throws Exception {
+    public static List<String> generateKeywords(FBPost post) throws Exception {
         String message = post.getMsg();
-        String cleanText = prepareMessage(cleanText(message));
-        return mkSortedKeywordsList(cleanText, vectorLen);
+        String preparedMessage = prepareMessage(cleanText(message));
+        return mkKeywordsList(preparedMessage);
     }
 
     private static String cleanText(String text) {
@@ -56,7 +57,7 @@ public class PostAnalyzer {
         return sb.toString().trim();
     }
 
-    private static List<String> mkSortedKeywordsList(String msg, int vSize) {
+    private static List<String> mkKeywordsList(String msg) {
         Map<String, Integer> map = new HashMap<>();
         Arrays.stream(msg.split(" ")).forEach(word -> {
             if (map.containsKey(word))
@@ -64,17 +65,9 @@ public class PostAnalyzer {
             else
                 map.put(word, 1);
         });
-
-        List<Map.Entry<String, Integer>> mapList = new ArrayList<>();
-        map.forEach(
-                (key, value) -> mapList.add(new AbstractMap.SimpleEntry<String, Integer>(key, value))
-        );
-        mapList.sort(Comparator.comparing(Map.Entry::getValue));
-        Collections.reverse(mapList);
-
-        return mapList.stream()
-                .limit(vSize)
-                .map(Map.Entry::getKey)
+        return map.keySet()
+                .stream()
+                .limit(Config.VECTOR_LIMIT)
                 .collect(Collectors.toList());
     }
 

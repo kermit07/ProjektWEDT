@@ -1,6 +1,5 @@
 package com.wedt.metric;
 
-public abstract class SimilarityCalculator<T, J> {
-
-    abstract double calcSimilarity(T tom, J jerry);
+public abstract class SimilarityCalculator<T, K> {
+    abstract public K calcSimilarity(T t1, T t2);
 }
