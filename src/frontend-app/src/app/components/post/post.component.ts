@@ -17,12 +17,12 @@ export class PostComponent implements OnInit {
 
 export class Post {
   id: string;
-  date: string;
   msg: string;
+  date: string;
 
-  constructor(id: string, date: string, msg: string) {
+  constructor(id: string, msg: string, date: string) {
     this.id = id;
-    this.date = date;
     this.msg = msg;
+    this.date = date;
   }
 }

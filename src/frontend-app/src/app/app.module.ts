@@ -10,6 +10,8 @@ import { PostSelectedComponent } from './components/post-selected/post-selected.
 import {routing} from "./app.routing";
 import { PostComponent } from './components/post/post.component';
 import { PostSimpleComponent } from './components/post-simple/post-simple.component';
+import {RestService} from "./service/RestService";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -24,9 +26,12 @@ import { PostSimpleComponent } from './components/post-simple/post-simple.compon
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     routing
   ],
-  providers: [],
+  providers: [
+    RestService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

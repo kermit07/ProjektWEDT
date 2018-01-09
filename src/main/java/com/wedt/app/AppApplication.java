@@ -1,39 +1,33 @@
 package com.wedt.app;
 
-import com.wedt.metric.PostsSimilarityMetricCalculator;
-import com.wedt.metric.SimplePostsSimilarityCalculator;
-import com.wedt.model.FBPost;
-import com.wedt.util.ReadPostsFromFile;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.io.IOException;
-import java.util.ArrayList;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-public class AppApplication {
+public class AppApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
+        SpringApplication.run(AppApplication.class, args);
+    }
 
-        // SpringApplication.run(AppApplication.class, args);
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(AppApplication.class);
+    }
 
-        // Inicjalizacja słownika WordNet
-        System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
-        ArrayList<FBPost> posts;
-        try {
-            posts = ReadPostsFromFile.getPosts("fb_posts_test.json");
-        } catch (IOException e) {
-            return;
-        }
-
-        SimplePostsSimilarityCalculator simple = new SimplePostsSimilarityCalculator();
-        PostsSimilarityMetricCalculator calc = new PostsSimilarityMetricCalculator(simple);
-
-        FBPost selectedPost = posts
-                .stream()
-                .filter(p -> p.getId().equals("784877008193417_1875602095787564"))
-                .findFirst()
-                .get();
-
-        calc.run(selectedPost, posts);
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**").allowedOrigins("http://localhost:4200");
+            }
+        };
     }
 }
