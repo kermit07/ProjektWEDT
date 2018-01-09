@@ -1,0 +1,44 @@
+.post {
+  position: relative;
+  margin: 15px 20px;
+  padding: 15px 50px;
+  border-radius: 5px;
+  background-color: #b7e5f4;
+  border: 2px solid #b7e5f4;
+}
+
+.arr-icon {
+  display: none;
+  color: #b7e5f4;
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  /* Transform looks at the element itself and not the parent. */
+  transform: translateY(-50%) translateX(100%);
+}
+
+.post:hover {
+  background-color: #fff;
+  border: 2px solid #b7e5f4;
+}
+
+.post:hover .arr-icon {
+  display: block;
+}
+
+span {
+  font-weight: 700;
+}
+
+.date {
+  text-align: right;
+}
+
+.message {
+  padding-top: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}

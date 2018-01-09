@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="page-title my-row">
+    <a routerLink="/list">
+      <i class="fa fa-chevron-left fa-3x" aria-hidden="true"></i>
+    </a>
+    <h2>
+      Wybrany post:
+    </h2>
+  </div>
+  <app-post-simple [post]="selectedPost"></app-post-simple>
+  <div class="my-row row">
+    <div class="col">
+      <button type="button" class="btn btn-outline-info  btn-lg btn-block" (click)="simpleRun()">
+        <i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Dopasowanie proste
+      </button>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-secondary btn-lg btn-block" (click)="advanceRun()">
+        <i class="fa fa-server fa-lg"></i>&nbsp;&nbsp;Dopasowanie zaawansowane
+      </button>
+    </div>
+  </div>
+  <div class="my-row" *ngIf="similarityPosts.length > 0">
+    <h4>
+      Znalezione dopasowania:
+    </h4>
+  </div>
+  <div class="my-row" *ngFor='let post of similarityPosts'>
+    <span>Dopasowanie: 66%</span>
+    <app-post-simple [post]="post"></app-post-simple>
+  </div>
+</div>

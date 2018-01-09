@@ -1,0 +1,17 @@
+.page-title {
+  position: relative;
+}
+
+.page-title i {
+  position: absolute;
+  left: -55px;
+  color: black;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.my-row {
+  margin: 15px 20px;
+}

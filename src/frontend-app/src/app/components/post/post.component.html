@@ -1,0 +1,20 @@
+<a routerLink="/list/{{post.id}}">
+  <div class="post">
+    <div class="arr-icon">
+      <i class="fa fa-chevron-right fa-4x" aria-hidden="true"></i>
+    </div>
+    <div class="row">
+      <div class="col id">
+        ID: <span>{{post.id}}</span>
+      </div>
+      <div class="col date">
+        Data dodania: <span>{{post.date}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col message">
+        {{post.msg}}
+      </div>
+    </div>
+  </div>
+</a>
