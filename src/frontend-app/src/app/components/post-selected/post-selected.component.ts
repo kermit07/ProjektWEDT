@@ -13,7 +13,9 @@ import {isUndefined} from "util";
 export class PostSelectedComponent implements OnInit, OnDestroy {
   selectedPost: Post;
   similarityPosts: PostResult[];
-  id: String;
+  id: String
+  private simpleLoading = false;
+  private advancedLoading = false;
   private sub: Subscription;
   private sub1: Subscription;
   private sub2: Subscription;
@@ -35,19 +37,22 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
   }
 
   simpleRun() {
+    this.simpleLoading = true;
     this.similarityPosts = [];
     this.sub2 = this.restService.getSimple(this.selectedPost.id)
       .subscribe((data) => {
         this.similarityPosts = data;
-        console.log(this.similarityPosts)
+        this.simpleLoading = false;
       });
   }
 
   advanceRun() {
+    this.advancedLoading = true;
     this.similarityPosts = [];
     this.sub3 = this.restService.getAdvanced(this.selectedPost.id)
       .subscribe((data) => {
         this.similarityPosts = data;
+        this.advancedLoading = false;
       });
   }
 

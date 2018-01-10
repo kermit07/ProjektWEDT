@@ -53,11 +53,10 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Pair<FBPost, Double>> runSimple(@PathVariable("id") String id) { // TODO
+    public List<Pair<FBPost, Double>> runSimple(@PathVariable("id") String id) {
         try {
             ArrayList<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json");
             FBPost selectedPost = this.getPost(id);
-
             PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new SimplePostsSimilarityCalculator());
             return metric.run(selectedPost, allPosts)
                     .stream()
@@ -74,7 +73,7 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Pair<FBPost, Double>> runAdvanced(@PathVariable("id") String id) { // TODO
+    public List<Pair<FBPost, Double>> runAdvanced(@PathVariable("id") String id) {
         try {
             ArrayList<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json");
             FBPost selectedPost = this.getPost(id);

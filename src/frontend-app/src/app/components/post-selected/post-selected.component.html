@@ -10,13 +10,18 @@
   <app-post-simple [post]="selectedPost"></app-post-simple>
   <div class="my-row row">
     <div class="col">
-      <button type="button" class="btn btn-outline-info  btn-lg btn-block" (click)="simpleRun()">
-        <i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Dopasowanie proste
+      <button type="button" class="btn btn-outline-info  btn-lg btn-block" [disabled]="simpleLoading" (click)="simpleRun()">
+        <i class="fa fa-sort-amount-desc fa-lg" *ngIf="!simpleLoading"></i>
+        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="simpleLoading"></i>
+        &nbsp;&nbsp;Dopasowanie proste
+        <!--<i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Dopasowanie proste-->
       </button>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-outline-secondary btn-lg btn-block" (click)="advanceRun()">
-        <i class="fa fa-server fa-lg"></i>&nbsp;&nbsp;Dopasowanie zaawansowane
+      <button type="button" class="btn btn-outline-secondary btn-lg btn-block" [disabled]="advancedLoading" (click)="advanceRun()">
+        <i class="fa fa-server fa-lg" *ngIf="!advancedLoading"></i>
+        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="advancedLoading"></i>
+        &nbsp;&nbsp;Dopasowanie zaawansowane
       </button>
     </div>
   </div>
