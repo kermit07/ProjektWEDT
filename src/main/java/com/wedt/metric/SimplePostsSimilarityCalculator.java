@@ -9,17 +9,17 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SimplePostsSimilarityCalculator extends SimilarityCalculator<FBPost, Pair<String, Double>> {
+public class SimplePostsSimilarityCalculator extends SimilarityCalculator<FBPost, Pair<FBPost, Double>> {
 
     @Override
-    public Pair<String, Double> calcSimilarity(FBPost p1, FBPost p2) {
+    public Pair<FBPost, Double> calcSimilarity(FBPost selected, FBPost other) {
         Set<String> ss1, ss2;
         try {
-            ss1 = generateSynonymSet(PostAnalyzer.generateKeywords(p1));
-            ss2 = generateSynonymSet(PostAnalyzer.generateKeywords(p2));
+            ss1 = generateSynonymSet(PostAnalyzer.generateKeywords(selected));
+            ss2 = generateSynonymSet(PostAnalyzer.generateKeywords(other));
         } catch (Exception e) {
             e.printStackTrace();
-            return new Pair<>(p2.getId(), 0.0);
+            return new Pair<>(other, 0.0);
         }
 
         double generalSimSum = 0.0;
@@ -30,7 +30,7 @@ public class SimplePostsSimilarityCalculator extends SimilarityCalculator<FBPost
             for (String w2 : ss2) {
                 double similarity = wsc.calcSimilarity(w1, w2);
                 generalSimSum += similarity;
-                if(similarity > 0.0) {
+                if (similarity > 0.0) {
                     reducedSimSum += similarity;
                     keywordPairsCounter++;
                 }
@@ -46,10 +46,9 @@ public class SimplePostsSimilarityCalculator extends SimilarityCalculator<FBPost
         double timeFactor = 0.0; // TODO maybe
         PostMatchingMeasure postMatchingMeasure = new PostMatchingMeasure(generalSimilarity, reducedSimilarity, keywordPairsCounter);
 
-        System.out.println(p2.getId() + ": " + generalSimilarity + " | " + reducedSimilarity + " | " + keywordPairsCounter);
         double calcFinalSimilarity = postMatchingMeasure.getReducedSimilarity();
         // TODO - funkcja która z powyższych danych zwróci jakąś sensowną wartość
-        return new Pair<>(p2.getId(), calcFinalSimilarity);
+        return new Pair<>(other, calcFinalSimilarity * 100); // to percentage
     }
 
     protected Set<String> generateSynonymSet(Collection<String> list) {

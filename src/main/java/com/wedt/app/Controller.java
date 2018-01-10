@@ -1,22 +1,21 @@
 package com.wedt.app;
 
+import com.wedt.metric.AdvancedPostsSimilarityCalculator;
+import com.wedt.metric.PostsSimilarityMetricCalculator;
+import com.wedt.metric.SimplePostsSimilarityCalculator;
 import com.wedt.model.FBPost;
 import javafx.util.Pair;
-import org.hibernate.mapping.Collection;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
 public class Controller {
 
-    @RequestMapping(
-            value = "/api/posts",
+    @RequestMapping(value = "/api/posts",
             method = RequestMethod.GET,
             produces = "application/json"
     )
@@ -28,7 +27,6 @@ public class Controller {
                     .limit(limit)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-//            e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -46,8 +44,7 @@ public class Controller {
                     .findFirst()
                     .get();
         } catch (IOException e) {
-//            e.printStackTrace();
-            return new FBPost(id, "message!", LocalDateTime.now());
+            return null;
         }
     }
 
@@ -56,12 +53,19 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Pair<FBPost, Double>> runSimple() { // TODO
-        System.out.println("runSimple() ");
-        List<Pair<FBPost, Double>> posts = new ArrayList<>();
-        posts.add(new Pair<>(new FBPost("123", "message1", LocalDateTime.now()), 63.23));
-        posts.add(new Pair<>(new FBPost("234", "message2", LocalDateTime.now()), 53.12));
-        return posts;
+    public List<Pair<FBPost, Double>> runSimple(@PathVariable("id") String id) { // TODO
+        try {
+            ArrayList<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json");
+            FBPost selectedPost = this.getPost(id);
+
+            PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new SimplePostsSimilarityCalculator());
+            return metric.run(selectedPost, allPosts)
+                    .stream()
+                    .limit(20)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
     }
 
     @RequestMapping(
@@ -69,13 +73,18 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Pair<FBPost, Double>> runAdvanced() { // TODO
-        System.out.println("runAdvanced() ");
-        List<Pair<FBPost, Double>> posts = new ArrayList<>();
-        posts.add(new Pair<>(new FBPost("123", "message1", LocalDateTime.now()), 63.23));
-        posts.add(new Pair<>(new FBPost("234", "message2", LocalDateTime.now()), 53.12));
-        posts.add(new Pair<>(new FBPost("234", "message3", LocalDateTime.now()), 33.12));
-        posts.add(new Pair<>(new FBPost("345", "message4", LocalDateTime.now()), 22.12));
-        return posts;
+    public List<Pair<FBPost, Double>> runAdvanced(@PathVariable("id") String id) { // TODO
+        try {
+            ArrayList<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json");
+            FBPost selectedPost = this.getPost(id);
+
+            PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new AdvancedPostsSimilarityCalculator());
+            return metric.run(selectedPost, allPosts)
+                    .stream()
+                    .limit(20)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return new ArrayList<>();
+        }
     }
 }

@@ -26,7 +26,7 @@
     </h4>
   </div>
   <div class="my-row" *ngFor='let sp of similarityPosts'>
-    <span>Dopasowanie: {{sp.value}}%</span>
+    <span>Dopasowanie: {{sp.value.toFixed(2)}}%</span>
     <app-post-simple [post]="sp.key"></app-post-simple>
   </div>
 </div>
