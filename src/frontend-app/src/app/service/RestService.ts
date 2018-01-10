@@ -8,7 +8,7 @@ export class RestService {
   constructor(public http: HttpClient) {
   }
 
-  getPosts(limit : number, offset: number) {
+  getPosts(limit: number, offset: number) {
     return this.http.get("http://localhost:8080/api/posts?limit=" + limit + "&offset=" + offset)
       .map(res => {
         const items = <any[]>res;
@@ -26,20 +26,22 @@ export class RestService {
   }
 
   getSimple(id: String) {
-    return this.http.get("http://localhost:8080/api/simple/ + id")
-      .map(res => {
-        const items = <any[]>res;
-        items.forEach(item => item.date = this.dateToString(item.date));
-        return items;
+    return this.http.get("http://localhost:8080/api/simple/" + id)
+      .map((res: any) => {
+        res.map((post: any) => {
+          post.key.date = this.dateToString(post.key.date);
+        })
+        return <any[]>res;
       });
   }
 
   getAdvanced(id: String) {
     return this.http.get("http://localhost:8080/api/advanced/" + id)
-      .map(res => {
-        const items = <any[]>res;
-        items.forEach(item => item.date = this.dateToString(item.date));
-        return items;
+      .map((res: any) => {
+        res.map((post: any) => {
+          post.key.date = this.dateToString(post.key.date);
+        })
+        return <any[]>res;
       });
   }
 

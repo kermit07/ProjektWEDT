@@ -1,6 +1,7 @@
 package com.wedt.app;
 
 import com.wedt.model.FBPost;
+import javafx.util.Pair;
 import org.hibernate.mapping.Collection;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,11 +56,11 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<FBPost> runSimple() { // TODO
+    public List<Pair<FBPost, Double>> runSimple() { // TODO
         System.out.println("runSimple() ");
-        List<FBPost> posts = new ArrayList<>();
-        posts.add(new FBPost("123", "message1", LocalDateTime.now()));
-        posts.add(new FBPost("234", "message2", LocalDateTime.now()));
+        List<Pair<FBPost, Double>> posts = new ArrayList<>();
+        posts.add(new Pair<>(new FBPost("123", "message1", LocalDateTime.now()), 63.23));
+        posts.add(new Pair<>(new FBPost("234", "message2", LocalDateTime.now()), 53.12));
         return posts;
     }
 
@@ -68,13 +69,13 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<FBPost> runAdvanced() { // TODO
+    public List<Pair<FBPost, Double>> runAdvanced() { // TODO
         System.out.println("runAdvanced() ");
-        List<FBPost> posts = new ArrayList<>();
-        posts.add(new FBPost("123", "message1", LocalDateTime.now()));
-        posts.add(new FBPost("234", "message2", LocalDateTime.now()));
-        posts.add(new FBPost("345", "message3", LocalDateTime.now()));
-        posts.add(new FBPost("789", "message3", LocalDateTime.now()));
+        List<Pair<FBPost, Double>> posts = new ArrayList<>();
+        posts.add(new Pair<>(new FBPost("123", "message1", LocalDateTime.now()), 63.23));
+        posts.add(new Pair<>(new FBPost("234", "message2", LocalDateTime.now()), 53.12));
+        posts.add(new Pair<>(new FBPost("234", "message3", LocalDateTime.now()), 33.12));
+        posts.add(new Pair<>(new FBPost("345", "message4", LocalDateTime.now()), 22.12));
         return posts;
     }
 }

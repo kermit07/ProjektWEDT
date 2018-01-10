@@ -25,8 +25,8 @@
       Znalezione dopasowania:
     </h4>
   </div>
-  <div class="my-row" *ngFor='let post of similarityPosts'>
-    <span>Dopasowanie: 66%</span>
-    <app-post-simple [post]="post"></app-post-simple>
+  <div class="my-row" *ngFor='let sp of similarityPosts'>
+    <span>Dopasowanie: {{sp.value}}%</span>
+    <app-post-simple [post]="sp.key"></app-post-simple>
   </div>
 </div>

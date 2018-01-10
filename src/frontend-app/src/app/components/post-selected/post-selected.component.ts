@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Post} from "../post/post.component";
+import {Post, PostResult} from "../post/post.component";
 import {RestService} from "../../service/RestService";
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from "rxjs/Subscription";
@@ -12,7 +12,7 @@ import {isUndefined} from "util";
 })
 export class PostSelectedComponent implements OnInit, OnDestroy {
   selectedPost: Post;
-  similarityPosts: Post[];
+  similarityPosts: PostResult[];
   id: String;
   private sub: Subscription;
   private sub1: Subscription;
@@ -39,6 +39,7 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
     this.sub2 = this.restService.getSimple(this.selectedPost.id)
       .subscribe((data) => {
         this.similarityPosts = data;
+        console.log(this.similarityPosts)
       });
   }
 
