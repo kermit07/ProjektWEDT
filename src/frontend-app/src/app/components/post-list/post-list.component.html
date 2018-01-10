@@ -7,16 +7,19 @@
       Lista postów:
     </h2>
   </div>
+  <div class="my-row" *ngIf="posts.length == 0">
+    Brak postów
+  </div>
   <app-post *ngFor='let post of posts' [post]="post"> </app-post>
   <div class="my-row row">
     <div class="col">
       <button type="button" class="btn btn-outline-info  btn-lg btn-block" (click)="loadMore()">
-        <i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Załaduj więcej postów TODO
+        <i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Załaduj więcej postów
       </button>
     </div>
     <div class="col">
       <button type="button" class="btn btn-outline-secondary btn-lg btn-block" (click)="loadAll()">
-        <i class="fa fa-server fa-lg"></i>&nbsp;&nbsp;Załaduj wszystkie posty TODO
+        <i class="fa fa-server fa-lg"></i>&nbsp;&nbsp;Załaduj wszystkie posty
       </button>
     </div>
   </div>

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,9 +19,7 @@ public class ReadPostsFromFile {
 
     public static ArrayList<FBPost> getPosts(String fileName) throws IOException {
 
-        ArrayList<FBPost> posts = new ArrayList<>();
         String content = new String(Files.readAllBytes(Paths.get(Config.PROJECT_PATH + fileName)), "UTF-8");
-
         Gson g = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
             @Override
             public LocalDateTime deserialize(JsonElement json, Type type, JsonDeserializationContext jdc) throws JsonParseException {
@@ -30,6 +27,7 @@ public class ReadPostsFromFile {
             }
         }).create();
 
-        return g.fromJson(content, new TypeToken<List<FBPost>>(){}.getType());
+        return g.fromJson(content, new TypeToken<List<FBPost>>() {
+        }.getType());
     }
 }

@@ -1,31 +1,31 @@
 package com.wedt.app;
 
 import com.wedt.model.FBPost;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.hibernate.mapping.Collection;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 public class Controller {
-
-    @Autowired
-    ReadPostsFromFile readPostsFromFile;
 
     @RequestMapping(
             value = "/api/posts",
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<FBPost> getPosts() {
+    public List<FBPost> getPosts(@RequestParam(value = "limit", required = true) long limit, @RequestParam(value = "offset", required = true) long offset) {
         try {
-            return ReadPostsFromFile.getPosts("fb_posts_test.json");
+            return ReadPostsFromFile.getPosts("fb_posts_test.json")
+                    .stream()
+                    .skip(offset)
+                    .limit(limit)
+                    .collect(Collectors.toList());
         } catch (IOException e) {
 //            e.printStackTrace();
             return new ArrayList<>();

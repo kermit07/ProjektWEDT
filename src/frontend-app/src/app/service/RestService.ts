@@ -8,8 +8,8 @@ export class RestService {
   constructor(public http: HttpClient) {
   }
 
-  getPosts() {
-    return this.http.get("http://localhost:8080/api/posts/")
+  getPosts(limit : number, offset: number) {
+    return this.http.get("http://localhost:8080/api/posts?limit=" + limit + "&offset=" + offset)
       .map(res => {
         const items = <any[]>res;
         items.forEach(item => item.date = this.dateToString(item.date));

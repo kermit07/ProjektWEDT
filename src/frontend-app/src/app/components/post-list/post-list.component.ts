@@ -10,6 +10,8 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class PostListComponent implements OnInit, OnDestroy {
 
+  limit = 20;
+  offset = 0;
   posts: Post[];
   private sub:Subscription;
 
@@ -18,18 +20,26 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.posts = [];
-    this.sub = this.restService.getPosts()
+    this.sub = this.restService.getPosts(this.limit, 0)
       .subscribe((data) => {
         this.posts = data;
       });
   }
 
   loadMore() {
-    // TODO
+    this.offset = this.posts.length;
+    this.sub = this.restService.getPosts(this.limit, this.offset)
+      .subscribe((data) => {
+        this.posts = this.posts.concat(data);
+      });
   }
 
   loadAll() {
-    // TODO
+    this.offset = this.posts.length;
+    this.sub = this.restService.getPosts(Number.MAX_SAFE_INTEGER, this.offset)
+      .subscribe((data) => {
+        this.posts = this.posts.concat(data);
+      });
   }
 
   ngOnDestroy() {
