@@ -62,6 +62,7 @@ public class Controller {
             return metric.run(selectedPost, allPosts)
                     .stream()
                     .limit(20)
+                    .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             return new ArrayList<>();
@@ -82,6 +83,7 @@ public class Controller {
             return metric.run(selectedPost, allPosts)
                     .stream()
                     .limit(20)
+                    .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             return new ArrayList<>();
