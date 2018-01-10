@@ -1,24 +1,27 @@
-package com.wedt.util;
+package com.wedt.app;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.wedt.model.FBPost;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ReadPostsFromFile {
 
     public static ArrayList<FBPost> getPosts(String fileName) throws IOException {
 
         ArrayList<FBPost> posts = new ArrayList<>();
-        String content = new String(Files.readAllBytes(Paths.get(fileName)));
+        String content = new String(Files.readAllBytes(Paths.get(Config.PROJECT_PATH + fileName)), "UTF-8");
 
         Gson g = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
             @Override
