@@ -16,12 +16,17 @@ export class PostComponent implements OnInit {
 }
 
 export class PostResult {
-  key: Post;
-  value: number;
+  post: Post;
+  keywords: string[];
+  result: number;
+  kind: string;
 
-  constructor(key: Post, value: number) {
-    this.key = key;
-    this.value = value;
+
+  constructor(post: Post, keywords: string[], result: number, kind: string) {
+    this.post = post;
+    this.keywords = keywords;
+    this.result = result;
+    this.kind = kind;
   }
 }
 

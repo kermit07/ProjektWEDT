@@ -4,10 +4,7 @@ import edu.smu.tspell.wordnet.Synset;
 import edu.smu.tspell.wordnet.WordNetDatabase;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SynonymUtils {
@@ -55,5 +52,13 @@ public class SynonymUtils {
             e.printStackTrace();
         }
         return utf8String;
+    }
+
+    public static Set<String> generateSynonymSet(Collection<String> list) {
+        SynonymUtils synonymUtils = new SynonymUtils();
+        return list.stream()
+                .map(synonymUtils::getSynonymsSet)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 }

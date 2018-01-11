@@ -9,7 +9,7 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { PostSelectedComponent } from './components/post-selected/post-selected.component';
 import {routing} from "./app.routing";
 import { PostComponent } from './components/post/post.component';
-import { PostSimpleComponent } from './components/post-simple/post-simple.component';
+import { PostResultComponent } from './components/post-result/post-result.component';
 import {RestService} from "./service/RestService";
 import {HttpClientModule} from "@angular/common/http";
 
@@ -22,7 +22,7 @@ import {HttpClientModule} from "@angular/common/http";
     PostListComponent,
     PostSelectedComponent,
     PostComponent,
-    PostSimpleComponent
+    PostResultComponent
   ],
   imports: [
     BrowserModule,

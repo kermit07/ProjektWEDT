@@ -20,26 +20,16 @@ export class RestService {
   getPost(id: String) {
     return this.http.get("http://localhost:8080/api/post/" + id).map(res => {
       const item = <any>res;
-      item.date = this.dateToString(item.date);
+      item.post.date = this.dateToString(item.post.date);
       return item;
     });
   }
 
-  getSimple(id: String) {
-    return this.http.get("http://localhost:8080/api/simple/" + id)
+  run(id: String) {
+    return this.http.get("http://localhost:8080/api/run/" + id)
       .map((res: any) => {
         res.map((post: any) => {
-          post.key.date = this.dateToString(post.key.date);
-        })
-        return <any[]>res;
-      });
-  }
-
-  getAdvanced(id: String) {
-    return this.http.get("http://localhost:8080/api/advanced/" + id)
-      .map((res: any) => {
-        res.map((post: any) => {
-          post.key.date = this.dateToString(post.key.date);
+          post.post.date = this.dateToString(post.post.date);
         })
         return <any[]>res;
       });

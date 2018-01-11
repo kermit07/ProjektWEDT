@@ -5,7 +5,7 @@ import javafx.util.Pair;
 
 import java.time.LocalDateTime;
 
-public class AdvancedPostsSimilarityCalculator extends SimplePostsSimilarityCalculator {
+public class AdvancedPostsSimilarityCalculator extends SimilarityCalculator<FBPost, Pair<FBPost, Double>> {
 
     @Override
     public Pair<FBPost, Double> calcSimilarity(FBPost selected, FBPost other) {

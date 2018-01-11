@@ -17,13 +17,6 @@
         <!--<i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Dopasowanie proste-->
       </button>
     </div>
-    <div class="col">
-      <button type="button" class="btn btn-outline-secondary btn-lg btn-block" [disabled]="advancedLoading" (click)="advanceRun()">
-        <i class="fa fa-server fa-lg" *ngIf="!advancedLoading"></i>
-        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="advancedLoading"></i>
-        &nbsp;&nbsp;Dopasowanie zaawansowane
-      </button>
-    </div>
   </div>
   <div class="my-row" *ngIf="similarityPosts.length > 0">
     <h4>
@@ -31,7 +24,7 @@
     </h4>
   </div>
   <div *ngFor='let sp of similarityPosts'>
-    <span class="my-row">Dopasowanie: {{sp.value.toFixed(2)}}%</span>
-    <app-post-simple [post]="sp.key"></app-post-simple>
+    <span class="my-row">Dopasowanie: {{sp.result.toFixed(2)}}%</span>
+    <app-post-simple [post]="sp"></app-post-simple>
   </div>
 </div>

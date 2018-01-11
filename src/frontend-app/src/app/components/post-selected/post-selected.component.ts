@@ -11,22 +11,20 @@ import {isUndefined} from "util";
   styleUrls: ['./post-selected.component.css']
 })
 export class PostSelectedComponent implements OnInit, OnDestroy {
-  selectedPost: Post;
+  selectedPost: PostResult;
   similarityPosts: PostResult[];
   id: String
   private simpleLoading = false;
-  private advancedLoading = false;
   private sub: Subscription;
   private sub1: Subscription;
   private sub2: Subscription;
-  private sub3: Subscription;
 
   constructor(private route: ActivatedRoute, private restService: RestService) {
   }
 
   ngOnInit() {
     this.similarityPosts = [];
-    this.selectedPost = new Post("", "", "");
+    this.selectedPost = new PostResult(new Post("", "", ""), [], 0.0, "");
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });
@@ -39,20 +37,10 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
   simpleRun() {
     this.simpleLoading = true;
     this.similarityPosts = [];
-    this.sub2 = this.restService.getSimple(this.selectedPost.id)
+    this.sub2 = this.restService.run(this.selectedPost.post.id)
       .subscribe((data) => {
         this.similarityPosts = data;
         this.simpleLoading = false;
-      });
-  }
-
-  advanceRun() {
-    this.advancedLoading = true;
-    this.similarityPosts = [];
-    this.sub3 = this.restService.getAdvanced(this.selectedPost.id)
-      .subscribe((data) => {
-        this.similarityPosts = data;
-        this.advancedLoading = false;
       });
   }
 
@@ -61,8 +49,6 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
     this.sub1.unsubscribe();
     if (!isUndefined(this.sub2))
       this.sub2.unsubscribe();
-    if (!isUndefined(this.sub3))
-      this.sub3.unsubscribe();
   }
 
 }

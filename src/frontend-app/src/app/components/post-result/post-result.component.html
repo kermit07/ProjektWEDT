@@ -1,0 +1,21 @@
+<div class="post">
+  <div class="row">
+    <div class="col id">
+      ID: <span>{{post.post.id}}</span>
+    </div>
+    <div class="col date">
+      Data dodania: <span>{{post.post.date}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col message">
+      {{post.post.msg}}
+    </div>
+  </div>
+  <div class="row">
+    Rodzaj: {{post.kind}}
+  </div>
+  <div class="row">
+    <span *ngFor="let keyword of post.keywords">{{keyword}}&nbsp;</span>
+  </div>
+</div>

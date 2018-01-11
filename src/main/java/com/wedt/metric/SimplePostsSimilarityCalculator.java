@@ -15,8 +15,8 @@ public class SimplePostsSimilarityCalculator extends SimilarityCalculator<FBPost
     public Pair<FBPost, Double> calcSimilarity(FBPost selected, FBPost other) {
         Set<String> ss1, ss2;
         try {
-            ss1 = generateSynonymSet(PostAnalyzer.generateKeywords(selected));
-            ss2 = generateSynonymSet(PostAnalyzer.generateKeywords(other));
+            ss1 = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(selected));
+            ss2 = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(other));
         } catch (Exception e) {
             e.printStackTrace();
             return new Pair<>(other, 0.0);
@@ -49,13 +49,5 @@ public class SimplePostsSimilarityCalculator extends SimilarityCalculator<FBPost
         double calcFinalSimilarity = postMatchingMeasure.getReducedSimilarity();
         // TODO - funkcja która z powyższych danych zwróci jakąś sensowną wartość
         return new Pair<>(other, calcFinalSimilarity * 100); // to percentage
-    }
-
-    protected Set<String> generateSynonymSet(Collection<String> list) {
-        SynonymUtils synonymUtils = new SynonymUtils();
-        return list.stream()
-                .map(synonymUtils::getSynonymsSet)
-                .flatMap(Set::stream)
-                .collect(Collectors.toSet());
     }
 }
