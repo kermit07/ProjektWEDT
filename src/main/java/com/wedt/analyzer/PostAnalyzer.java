@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class PostAnalyzer {
 
-    public static List<String> generateKeywords(FBPost post) throws Exception {
+    public static Set<String> generateKeywords(FBPost post) throws Exception {
         String message = post.getMsg();
         String preparedMessage = prepareMessage(cleanText(message));
         return mkKeywordsList(preparedMessage);
@@ -57,18 +57,14 @@ public class PostAnalyzer {
         return sb.toString().trim();
     }
 
-    private static List<String> mkKeywordsList(String msg) {
-        Map<String, Integer> map = new HashMap<>();
+    private static Set<String> mkKeywordsList(String msg) {
+        Set<String> map = new HashSet<>();
         Arrays.stream(msg.split(" ")).forEach(word -> {
-            if (map.containsKey(word))
-                map.put(word, map.get(word) + 1);
-            else
-                map.put(word, 1);
+            map.add(word);
         });
-        return map.keySet()
-                .stream()
+        return map.stream()
                 .limit(Config.VECTOR_LIMIT)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
 }

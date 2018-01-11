@@ -26,7 +26,7 @@ export class RestService {
   }
 
   run(id: String) {
-    return this.http.get("http://localhost:8080/api/run/" + id)
+    return this.http.get("http://localhost:8080/api/run/" + id + "?synonymEnabled=true")
       .map((res: any) => {
         res.map((post: any) => {
           post.post.date = this.dateToString(post.post.date);

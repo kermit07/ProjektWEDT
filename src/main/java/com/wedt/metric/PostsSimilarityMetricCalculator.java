@@ -2,7 +2,6 @@ package com.wedt.metric;
 
 import com.wedt.model.FBPost;
 import com.wedt.model.FBPostResult;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
