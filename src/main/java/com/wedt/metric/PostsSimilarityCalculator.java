@@ -7,14 +7,13 @@ import com.wedt.model.FBPostResult;
 import com.wedt.util.SynonymUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostsSimilarityCalculator extends SimilarityCalculator<FBPost, FBPostResult> {
 
-    public PostsSimilarityCalculator(RepresentationConfiguration rc, ClassificationConfiguration cc) {
-        super(rc, cc);
+    public PostsSimilarityCalculator(RepresentationConfiguration rc, ClassificationConfiguration cc, Set<String> dictList) {
+        super(rc, cc, dictList);
     }
 
     @Override
@@ -22,45 +21,38 @@ public class PostsSimilarityCalculator extends SimilarityCalculator<FBPost, FBPo
         Set<String> ss1, ss2;
         try {
             if (this.rc.equals(RepresentationConfiguration.SIMPLE)) {
-                ss1 = PostAnalyzer.generateKeywords(selected);
-                ss2 = PostAnalyzer.generateKeywords(other);
+                ss1 = PostAnalyzer.generateKeywords(selected, this.dictList);
+                ss2 = PostAnalyzer.generateKeywords(other, this.dictList);
             } else {
-                ss1 = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(selected));
-                ss2 = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(other));
+                ss1 = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(selected, this.dictList));
+                ss2 = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(other, this.dictList));
             }
         } catch (Exception e) {
             e.printStackTrace();
             return new FBPostResult(other, new ArrayList<>(), 0.0, FBPostKind.UNKNOWN);
         }
 
-        if(this.cc.isDictionaryEnabled()) {
-            // wtedy ładujemy słownik, czyli grupy podobnych znaczeń
-        }
 
-        if(this.cc.isKindEnabled()) {
+        if (this.cc.isKindEnabled()) {
             // TODO na końcu
             // jeśli tak to próbujemy klasyfikować posty pod względem ogłoszeń i zgłoszeń kandydatów
         }
 
-        double reducedSimSum = 0.0;
-        int keywordPairsCounter = 0;
+        double similaritySum = 0.0;
         WordsSimilarityCalculator wsc = new WordsSimilarityCalculator();
         for (String w1 : ss1) {
             for (String w2 : ss2) {
                 double similarity = wsc.calcSimilarity(w1, w2);
-                if (similarity > 0.0) {
-                    System.out.println("similarity [" + w1 + "] [" + w2 + "] = " + similarity);
-                    reducedSimSum += similarity;
-                    keywordPairsCounter++;
-                }
-
+                if (similarity > 0.0)
+                    similaritySum += similarity;
             }
         }
-        double reducedSimilarity = 0.0;
-        if (keywordPairsCounter != 0)
-            reducedSimilarity = reducedSimSum / (double) keywordPairsCounter;
 
-        return new FBPostResult(other, ss2.stream().collect(Collectors.toList()), reducedSimilarity, FBPostKind.UNKNOWN);
+        if (this.cc.isDictionaryEnabled()) {
+            // TODO wtedy ładujemy słownik, czyli grupy podobnych znaczeń i zwiększamy dopasiwanie jeśli znaleźliśmy znaczenie synonimowe
+        }
+
+        return new FBPostResult(other, ss2.stream().collect(Collectors.toList()), similaritySum, FBPostKind.UNKNOWN);
     }
 
 }

@@ -12,15 +12,17 @@ import org.apache.lucene.util.AttributeFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostAnalyzer {
 
-    public static Set<String> generateKeywords(FBPost post) throws Exception {
+    public static Set<String> generateKeywords(FBPost post, Set<String> dictList) throws Exception {
         String message = post.getMsg();
         String preparedMessage = prepareMessage(cleanText(message));
-        return mkKeywordsList(preparedMessage);
+        return mkKeywordsList(preparedMessage, dictList);
     }
 
     private static String cleanText(String text) {
@@ -57,10 +59,11 @@ public class PostAnalyzer {
         return sb.toString().trim();
     }
 
-    private static Set<String> mkKeywordsList(String msg) {
+    private static Set<String> mkKeywordsList(String msg, Set<String> dictList) {
         Set<String> map = new HashSet<>();
         Arrays.stream(msg.split(" ")).forEach(word -> {
-            map.add(word);
+            if (dictList.contains(word))
+                map.add(word);
         });
         return map.stream()
                 .limit(Config.VECTOR_LIMIT)

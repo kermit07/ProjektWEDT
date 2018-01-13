@@ -16,7 +16,8 @@ public class PostsSimilarityMetricCalculator {
     public List<FBPostResult> run(FBPost selectedPost, List<FBPost> allPosts) {
         List<FBPostResult> result = new ArrayList<>();
         for (FBPost post : allPosts)
-            result.add(similarityCalculator.calcSimilarity(selectedPost, post));
+            if (!selectedPost.getId().equals(post.getId()))
+                result.add(similarityCalculator.calcSimilarity(selectedPost, post));
         return result;
     }
 }

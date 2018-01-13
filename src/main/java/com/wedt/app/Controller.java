@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,8 +24,8 @@ public class Controller {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<FBPost> getPosts(@RequestParam(value = "limit", required = true) long limit,
-                                 @RequestParam(value = "offset", required = true) long offset) {
+    public List<FBPost> getPosts(@RequestParam(value = "limit", defaultValue = "20") long limit,
+                                 @RequestParam(value = "offset", defaultValue = "0") long offset) {
         System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
         try {
             return ReadPostsFromFile.getPosts("fb_posts_test.json")
@@ -33,6 +34,7 @@ public class Controller {
                     .limit(limit)
                     .collect(Collectors.toList());
         } catch (IOException e) {
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
@@ -45,16 +47,18 @@ public class Controller {
     public FBPostResult getPost(@PathVariable("id") String id) {
         System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
         try {
+            Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
             FBPost foundPost = ReadPostsFromFile.getPosts("fb_posts_test.json")
                     .stream()
                     .filter(post -> post.getId().equals(id))
                     .findFirst()
                     .get();
-            List<String> keywords = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(foundPost))
+            List<String> keywords = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(foundPost, dictList))
                     .stream()
                     .collect(Collectors.toList());
             return new FBPostResult(foundPost, keywords, 0.0, FBPostKind.UNKNOWN);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -67,25 +71,30 @@ public class Controller {
     public List<FBPostResult> run(@PathVariable("id") String id,
                                   @RequestParam(value = "synonymEnabled", defaultValue = "false") boolean synonymEnabled,
                                   @RequestParam(value = "dictionaryEnabled", defaultValue = "false") boolean dictionaryEnabled,
-                                  @RequestParam(value = "kindEnabled", defaultValue = "false") boolean kindEnabled) {
+                                  @RequestParam(value = "kindEnabled", defaultValue = "false") boolean kindEnabled,
+                                  @RequestParam(value = "limit", defaultValue = "20") long limit,
+                                  @RequestParam(value = "offset", defaultValue = "0") long offset) {
+        System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
+
         RepresentationConfiguration rc = RepresentationConfiguration.SIMPLE;
         if (synonymEnabled)
             rc = RepresentationConfiguration.ADVANCED;
         ClassificationConfiguration cc = new ClassificationConfiguration(dictionaryEnabled, kindEnabled);
-        System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
+
         try {
-            List<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json")
-                    .stream()
-                    .limit(20)
-                    .collect(Collectors.toList());
+            Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
+            List<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json");
+
             FBPost selectedPost = this.getPost(id).getPost();
-            PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new PostsSimilarityCalculator(rc, cc));
+            PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new PostsSimilarityCalculator(rc, cc, dictList));
             return metric.run(selectedPost, allPosts)
                     .stream()
-                    .limit(20)
                     .sorted((e1, e2) -> Double.compare(e2.getResult(), e1.getResult()))
+                    .skip(offset)
+                    .limit(limit)
                     .collect(Collectors.toList());
         } catch (IOException e) {
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
