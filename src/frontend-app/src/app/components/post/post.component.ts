@@ -17,14 +17,14 @@ export class PostComponent implements OnInit {
 
 export class PostResult {
   post: Post;
-  keywords: string[];
+  similarity: any[];
   result: number;
   kind: string;
 
 
-  constructor(post: Post, keywords: string[], result: number, kind: string) {
+  constructor(post: Post, similarity: any[], result: number, kind: string) {
     this.post = post;
-    this.keywords = keywords;
+    this.similarity = similarity;
     this.result = result;
     this.kind = kind;
   }
@@ -34,10 +34,12 @@ export class Post {
   id: string;
   msg: string;
   date: string;
+  keywords: string[];
 
-  constructor(id: string, msg: string, date: string) {
+  constructor(id: string, msg: string, date: string, keywords: string[]) {
     this.id = id;
     this.msg = msg;
     this.date = date;
+    this.keywords = keywords;
   }
 }

@@ -19,10 +19,14 @@ import java.util.stream.Collectors;
 
 public class PostAnalyzer {
 
-    public static Set<String> generateKeywords(FBPost post, Set<String> dictList) throws Exception {
+    public static Set<String> generateKeywords(FBPost post, Set<String> dictList) {
         String message = post.getMsg();
-        String preparedMessage = prepareMessage(cleanText(message));
-        return mkKeywordsList(preparedMessage, dictList);
+        try {
+            String preparedMessage = prepareMessage(cleanText(message));
+            return mkKeywordsList(preparedMessage, dictList);
+        } catch (IOException e) {
+            return new HashSet<>();
+        }
     }
 
     private static String cleanText(String text) {

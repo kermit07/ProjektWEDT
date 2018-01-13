@@ -24,7 +24,7 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.similarityPosts = [];
-    this.selectedPost = new PostResult(new Post("", "", ""), [], 0.0, "");
+    this.selectedPost = new PostResult(new Post("", "", "", []), [], 0.0, "");
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
     });

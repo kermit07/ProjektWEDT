@@ -16,6 +16,6 @@
     Rodzaj: {{post.kind}}
   </div>
   <div class="row">
-    <span *ngFor="let keyword of post.keywords">{{keyword}}&nbsp;</span>
+    <span *ngFor="let similarity of post.similarity">{{similarity.key}} {{similarity.value.toFixed(2)}}&nbsp;</span>
   </div>
 </div>

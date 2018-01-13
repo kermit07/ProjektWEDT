@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class Controller {
                                  @RequestParam(value = "offset", defaultValue = "0") long offset) {
         System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
         try {
-            return ReadPostsFromFile.getPosts("fb_posts_test.json")
+            return ReadPostsFromFile.getPosts("fb_posts_test.json", new HashSet<>())
                     .stream()
                     .skip(offset)
                     .limit(limit)
@@ -48,15 +49,12 @@ public class Controller {
         System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
         try {
             Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
-            FBPost foundPost = ReadPostsFromFile.getPosts("fb_posts_test.json")
+            FBPost foundPost = ReadPostsFromFile.getPosts("fb_posts_test.json", dictList)
                     .stream()
                     .filter(post -> post.getId().equals(id))
                     .findFirst()
                     .get();
-            List<String> keywords = SynonymUtils.generateSynonymSet(PostAnalyzer.generateKeywords(foundPost, dictList))
-                    .stream()
-                    .collect(Collectors.toList());
-            return new FBPostResult(foundPost, keywords, 0.0, FBPostKind.UNKNOWN);
+            return new FBPostResult(foundPost, new HashSet<>(), 0.0, FBPostKind.UNKNOWN);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -83,10 +81,10 @@ public class Controller {
 
         try {
             Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
-            List<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json");
+            List<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json", dictList);
 
             FBPost selectedPost = this.getPost(id).getPost();
-            PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new PostsSimilarityCalculator(rc, cc, dictList));
+            PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new PostsSimilarityCalculator(rc, cc));
             return metric.run(selectedPost, allPosts)
                     .stream()
                     .sorted((e1, e2) -> Double.compare(e2.getResult(), e1.getResult()))

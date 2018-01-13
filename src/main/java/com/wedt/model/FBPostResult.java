@@ -1,16 +1,17 @@
 package com.wedt.model;
 
-import java.util.List;
+import javafx.util.Pair;
+import java.util.Set;
 
 public class FBPostResult {
     private FBPost post;
-    private List<String> keywords;
+    private Set<Pair<String, Double>> similarity;
     private double result;
     private FBPostKind kind;
 
-    public FBPostResult(FBPost post, List<String> keywords, double result, FBPostKind kind) {
+    public FBPostResult(FBPost post, Set<Pair<String, Double>> keywords, double result, FBPostKind kind) {
         this.post = post;
-        this.keywords = keywords;
+        this.similarity = keywords;
         this.result = result;
         this.kind = kind;
     }
@@ -23,12 +24,12 @@ public class FBPostResult {
         this.post = post;
     }
 
-    public List<String> getKeywords() {
-        return keywords;
+    public Set<Pair<String, Double>> getSimilarity() {
+        return similarity;
     }
 
-    public void setKeywords(List<String> keywords) {
-        this.keywords = keywords;
+    public void setSimilarity(Set<Pair<String, Double>> similarity) {
+        this.similarity = similarity;
     }
 
     public double getResult() {
@@ -51,7 +52,7 @@ public class FBPostResult {
     public String toString() {
         return "FBPostResult{" +
                 "post=" + post +
-                ", keywords=" + keywords +
+                ", similarity=" + similarity +
                 ", result=" + result +
                 ", kind=" + kind +
                 '}';

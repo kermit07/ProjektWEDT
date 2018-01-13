@@ -2,6 +2,7 @@ package com.wedt.app;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.wedt.analyzer.PostAnalyzer;
 import com.wedt.model.FBPost;
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +12,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReadPostsFromFile {
 
-    public static ArrayList<FBPost> getPosts(String fileName) throws IOException {
+    public static List<FBPost> getPosts(String fileName, Set<String> dictList) throws IOException {
 
         String content = new String(Files.readAllBytes(Paths.get(Config.PROJECT_PATH + fileName)), "UTF-8");
         Gson g = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
@@ -27,7 +29,13 @@ public class ReadPostsFromFile {
             }
         }).create();
 
-        return g.fromJson(content, new TypeToken<List<FBPost>>() {
-        }.getType());
+        List<FBPost> result = g.fromJson(content, new TypeToken<List<FBPost>>() {}.getType());
+
+        if(dictList.isEmpty())
+            return result;
+        return result
+                .stream()
+                .map(p -> new FBPost(p.getId(), p.getMsg(), p.getDate(), PostAnalyzer.generateKeywords(p, dictList)))
+                .collect(Collectors.toList());
     }
 }

@@ -19,6 +19,7 @@ export class RestService {
 
   getPost(id: String) {
     return this.http.get("http://localhost:8080/api/post/" + id).map(res => {
+      console.log(res)
       const item = <any>res;
       item.post.date = this.dateToString(item.post.date);
       return item;
@@ -26,8 +27,9 @@ export class RestService {
   }
 
   run(id: String) {
-    return this.http.get("http://localhost:8080/api/run/" + id + "?synonymEnabled=true")
+    return this.http.get("http://localhost:8080/api/run/" + id + "?synonymEnabled=false")
       .map((res: any) => {
+      console.log(res)
         res.map((post: any) => {
           post.post.date = this.dateToString(post.post.date);
         })
