@@ -68,7 +68,7 @@ public class Controller {
     )
     public List<FBPostResult> run(@PathVariable("id") String id,
                                   @RequestParam(value = "synonymEnabled", defaultValue = "false") boolean synonymEnabled,
-                                  @RequestParam(value = "dictionaryEnabled", defaultValue = "false") boolean dictionaryEnabled,
+                                  @RequestParam(value = "dictEnabled", defaultValue = "false") boolean dictionaryEnabled,
                                   @RequestParam(value = "kindEnabled", defaultValue = "false") boolean kindEnabled,
                                   @RequestParam(value = "limit", defaultValue = "20") long limit,
                                   @RequestParam(value = "offset", defaultValue = "0") long offset) {

@@ -26,10 +26,10 @@ export class RestService {
     });
   }
 
-  run(id: String) {
-    return this.http.get("http://localhost:8080/api/run/" + id + "?synonymEnabled=false")
+  run(id: String, synonymEnabled: boolean, dictEnabled: boolean, kindEnabled: boolean, limit: number, offset: number) {
+    var body = "synonymEnabled=" + synonymEnabled + "&dictEnabled=" + dictEnabled + "&kindEnabled=" + kindEnabled + "&limit=" + limit + "&offset=" + offset;
+    return this.http.get("http://localhost:8080/api/run/" + id + "?" + body)
       .map((res: any) => {
-      console.log(res)
         res.map((post: any) => {
           post.post.date = this.dateToString(post.post.date);
         })

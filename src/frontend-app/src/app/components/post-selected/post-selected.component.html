@@ -10,14 +10,27 @@
   <app-post-result [post]="selectedPost"></app-post-result>
   <div class="my-row row">
     <div class="col">
-      <button type="button" class="btn btn-outline-info  btn-lg btn-block" [disabled]="simpleLoading" (click)="simpleRun()">
-        <i class="fa fa-sort-amount-desc fa-lg" *ngIf="!simpleLoading"></i>
-        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="simpleLoading"></i>
-        &nbsp;&nbsp;Dopasowanie proste
-        <!--<i class="fa fa-sort-amount-desc fa-lg"></i>&nbsp;&nbsp;Dopasowanie proste-->
-      </button>
+      <input type="checkbox" id="synonymEnabled" [checked]="synonymEnabled" (change)="synonymEnabled = !synonymEnabled" />
+      <label for="synonymEnabled">Synonimy</label>
+    </div>
+    <div class="col">
+      <input type="checkbox" id="dictEnabled" [checked]="dictEnabled" (change)="dictEnabled = !dictEnabled" />
+      <label for="dictEnabled">Słownik</label>
+    </div>
+    <div class="col">
+      <input type="checkbox" id="kindEnabled" [checked]="kindEnabled" (change)="kindEnabled = !kindEnabled" />
+      <label for="kindEnabled">Rodzaj</label>
     </div>
   </div>
+  <div class="my-row row">
+  <div class="col">
+    <button type="button" class="btn btn-outline-info  btn-lg btn-block" [disabled]="simpleLoading" (click)="simpleRun()">
+      <i class="fa fa-sort-amount-desc fa-lg" *ngIf="!simpleLoading"></i>
+      <i class="fa fa-spinner fa-spin fa-lg" *ngIf="simpleLoading"></i>
+      &nbsp;&nbsp;Szukaj dopasowań
+    </button>
+  </div>
+</div>
   <div class="my-row" *ngIf="similarityPosts.length > 0">
     <h4>
       Znalezione dopasowania:
@@ -26,5 +39,13 @@
   <div *ngFor='let sp of similarityPosts'>
     <span class="my-row">Dopasowanie: {{sp.result.toFixed(2)}}</span>
     <app-post-result [post]="sp"></app-post-result>
+  </div>
+  <div class="my-row row" *ngIf="similarityPosts.length > 0">
+    <div class="col">
+      <button type="button" class="btn btn-outline-info  btn-lg btn-block" (click)="loadMore()">
+        <i class="fa fa-sort-amount-desc fa-lg" *ngIf="!simpleLoading"></i>
+        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="simpleLoading"></i>&nbsp;&nbsp;Załaduj więcej postów
+      </button>
+    </div>
   </div>
 </div>
