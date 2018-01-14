@@ -13,7 +13,6 @@ import {isUndefined} from "util";
 export class PostSelectedComponent implements OnInit, OnDestroy {
   selectedPost: PostResult;
   similarityPosts: PostResult[];
-  similarAdvancePosts: PostResult[];
   id: String
   private simpleLoading = false;
   private sub: Subscription;
@@ -25,7 +24,6 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.similarityPosts = [];
-    this.similarAdvancePosts = [];
     this.selectedPost = new PostResult(new Post("", "", "", []), [], 0.0, "");
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
@@ -39,23 +37,10 @@ export class PostSelectedComponent implements OnInit, OnDestroy {
   simpleRun() {
     this.simpleLoading = true;
     this.similarityPosts = [];
-    this.similarAdvancePosts = [];
-
-    this.sub2 = this.restService.run(this.selectedPost.post.id, false)
+    this.sub2 = this.restService.run(this.selectedPost.post.id)
       .subscribe((data) => {
         this.similarityPosts = data;
         this.simpleLoading = false;
-      });
-  }
-
-  advanceRun() {
-    this.advanceLoading = true;
-    this.similarityPosts = [];
-    this.similarAdvancePosts = [];
-    this.sub2 = this.restService.run(this.selectedPost.post.id, true)
-      .subscribe((data) => {
-        this.similarAdvancePosts = data;
-        this.advanceLoading = false;
       });
   }
 

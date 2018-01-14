@@ -26,8 +26,8 @@ export class RestService {
     });
   }
 
-  run(id: String, advance: boolean) {
-    return this.http.get("http://localhost:8080/api/run/" + id + "?synonymEnabled=false" + "&advance=" + advance)
+  run(id: String) {
+    return this.http.get("http://localhost:8080/api/run/" + id + "?synonymEnabled=false")
       .map((res: any) => {
       console.log(res)
         res.map((post: any) => {
