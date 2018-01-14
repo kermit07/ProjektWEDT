@@ -3,6 +3,7 @@ package com.wedt.metric;
 import com.wedt.model.FBPost;
 import com.wedt.model.FBPostKind;
 import com.wedt.model.FBPostResult;
+import com.wedt.util.SynonymUtils;
 import javafx.util.Pair;
 import org.apache.lucene.search.similarities.Similarity;
 
@@ -22,10 +23,16 @@ public class PostsSimilarityCalculator extends SimilarityCalculator<FBPost, FBPo
             // jeśli tak to próbujemy klasyfikować posty pod względem ogłoszeń i zgłoszeń kandydatów
         }
 
+        Set<String> keyWords = selected.getKeywords();
+            if (this.rc == RepresentationConfiguration.ADVANCED) {
+                Set<String> keyWordsSynonyms = SynonymUtils.generateSynonymSet(selected.getKeywords());
+                keyWords.addAll(keyWordsSynonyms);
+            }
+
         Set<Pair<String, Double>> similarity = new HashSet<>();
         double similaritySum = 0.0;
         WordsSimilarityCalculator wsc = new WordsSimilarityCalculator();
-        for (String w1 : selected.getKeywords()) {
+        for (String w1 : keyWords) {
             for (String w2 : other.getKeywords()) {
                 double sim = wsc.calcSimilarity(w1, w2);
                 if (sim > 0.0) {
