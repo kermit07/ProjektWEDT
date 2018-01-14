@@ -1,10 +1,7 @@
 package com.wedt.app;
 
 import com.wedt.analyzer.PostAnalyzer;
-import com.wedt.metric.ClassificationConfiguration;
-import com.wedt.metric.PostsSimilarityCalculator;
-import com.wedt.metric.PostsSimilarityMetricCalculator;
-import com.wedt.metric.RepresentationConfiguration;
+import com.wedt.metric.*;
 import com.wedt.model.FBPost;
 import com.wedt.model.FBPostKind;
 import com.wedt.model.FBPostResult;
@@ -54,7 +51,7 @@ public class Controller {
                     .filter(post -> post.getId().equals(id))
                     .findFirst()
                     .get();
-            return new FBPostResult(foundPost, new HashSet<>(), 0.0, FBPostKind.UNKNOWN);
+            return new FBPostResult(foundPost, new HashSet<>(), 0.0, PostKindCalculator.calculatePostKind(foundPost));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
