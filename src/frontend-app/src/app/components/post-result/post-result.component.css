@@ -18,3 +18,7 @@ span {
 .message {
   padding-top: 10px;
 }
+
+.keywords {
+  word-break: break-all;
+}

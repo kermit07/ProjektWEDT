@@ -29,13 +29,15 @@ public class ReadPostsFromFile {
             }
         }).create();
 
-        List<FBPost> result = g.fromJson(content, new TypeToken<List<FBPost>>() {}.getType());
+        List<FBPost> result = g.fromJson(content, new TypeToken<List<FBPost>>() {
+        }.getType());
 
-        if(dictList.isEmpty())
+        if (dictList.isEmpty())
             return result;
         return result
                 .stream()
                 .map(p -> new FBPost(p.getId(), p.getMsg(), p.getDate(), PostAnalyzer.generateKeywords(p, dictList)))
+                .filter(p -> p.getKeywords().size() > 0)
                 .collect(Collectors.toList());
     }
 }

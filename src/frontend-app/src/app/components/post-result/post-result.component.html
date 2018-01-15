@@ -16,6 +16,10 @@
     Rodzaj: {{post.kind}}
   </div>
   <div class="row">
+    Słowa kluczowe:&nbsp;
+    <span *ngFor="let kw of post.post.keywords">{{kw}},&nbsp;</span>
+  </div><br/>
+  <div class="row">
     <span *ngFor="let similarity of post.similarity">{{similarity.key}} {{similarity.value.toFixed(2)}}&nbsp;</span>
   </div>
 </div>

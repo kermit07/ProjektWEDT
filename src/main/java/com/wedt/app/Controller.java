@@ -26,7 +26,8 @@ public class Controller {
                                  @RequestParam(value = "offset", defaultValue = "0") long offset) {
         System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
         try {
-            return ReadPostsFromFile.getPosts("fb_posts_test.json", new HashSet<>())
+            Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
+            return ReadPostsFromFile.getPosts("fb_posts.json", dictList)
                     .stream()
                     .skip(offset)
                     .limit(limit)
@@ -46,7 +47,7 @@ public class Controller {
         System.setProperty("wordnet.database.dir", Config.WORDNET_DIST_DIR);
         try {
             Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
-            FBPost foundPost = ReadPostsFromFile.getPosts("fb_posts_test.json", dictList)
+            FBPost foundPost = ReadPostsFromFile.getPosts("fb_posts.json", dictList)
                     .stream()
                     .filter(post -> post.getId().equals(id))
                     .findFirst()
@@ -78,7 +79,7 @@ public class Controller {
 
         try {
             Set<String> dictList = ReadStringSetFromFile.getDict("dict_list.txt");
-            List<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts_test.json", dictList);
+            List<FBPost> allPosts = ReadPostsFromFile.getPosts("fb_posts.json", dictList);
 
             FBPost selectedPost = this.getPost(id).getPost();
             PostsSimilarityMetricCalculator metric = new PostsSimilarityMetricCalculator(new PostsSimilarityCalculator(rc, cc));

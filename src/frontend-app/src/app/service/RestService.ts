@@ -19,7 +19,6 @@ export class RestService {
 
   getPost(id: String) {
     return this.http.get("http://localhost:8080/api/post/" + id).map(res => {
-      console.log(res)
       const item = <any>res;
       item.post.date = this.dateToString(item.post.date);
       return item;
