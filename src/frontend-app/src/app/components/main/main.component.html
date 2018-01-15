@@ -3,8 +3,21 @@
     <h1>
       Projekt WEDT
     </h1>
+    <h2>
+      Dopasowywanie znalezionych ofert pracy do zgłoszeń kandydatów.
+    </h2>
     <p>
-      Opis można jakiś tutaj dodać TODO
+      Głównym celem stworzonego projektu jest dopasowanie tematyczne ogłoszeń (postów) zamieszczonych na portalu społecznościowym Facebook. Z czterech grup Facebook'owych zostały pobrane posty (10313 sztuk). Posty zostały następnie poddane wstępnej filtracji za pomocą tzw. stop-words oraz usunięte zostały posty zawierające tylko link. Po filtracji zostało około 8000 postów gotowych do dalszej pracy.
+    </p>
+    <p>
+      Każdy post może zostać przeanalizowany pod kątem znalezienia postów podobnych, ale o odwrotnym wydźwięku. To znaczy: do postu wyglądającego jak oferta zespołu zostaną dopasowane posty wyglądające jak ogłoszenia osób szukających zespołów oraz odwrotnie - do postów osób zostaną przypisane posty zespołów.
+    </p>
+    <p>
+      Wykorzystujemy 4 sposoby porównywania postów:<br />
+      - liczenie odległosci Levenshtein'a,<br />
+      - zastosowanie podejścia prefixowego,<br />
+      - sprawdzanie podobieństw za pomocą synonimów, <br />
+      - grupowanie postów  według kategorii posta: oferta (zespołu) oraz profil kandytata (osoby).
     </p>
   </div>
   <div class="button">
@@ -16,5 +29,8 @@
 </div>
 
 <div class="footer">
-  Autorzy: Maciej Bogdański | dopiszcie się
+  Autorzy:<br />
+  Maciej Bogdański | Mateusz Jóźwik | Radosław Skarżycki<br />
+  Prowadzący: dr inż. Grzegorz Protaziuk<br />
+  Wydział Elektroniki i Technik Informacyjnych Politechniki Warszawskiej
 </div>
