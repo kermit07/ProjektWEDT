@@ -31,7 +31,7 @@ public class PostAnalyzer {
 
     private static String cleanText(String text) {
         return text.toLowerCase()
-                .replaceAll("[\\p{Punct}&&[^'-]]+", ""); // usunięcie znaków interpunkcyjnych z wyjątkiem ' i -
+                .replaceAll("[\\p{Punct}&&[^'-]]+", " "); // usunięcie znaków interpunkcyjnych z wyjątkiem ' i -
     }
 
     private static String prepareMessage(String msg) throws IOException {

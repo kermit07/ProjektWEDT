@@ -36,7 +36,7 @@ public class PostsSimilarityCalculator extends SimilarityCalculator<FBPost, FBPo
             FBPostKind selectedPostKind = PostKindCalculator.calculatePostKind(selected);
             FBPostKind otherPostKind = PostKindCalculator.calculatePostKind(other);
 
-            if (selectedPostKind != FBPostKind.UNKNOWN || otherPostKind != FBPostKind.UNKNOWN || selectedPostKind == otherPostKind) {
+            if (selectedPostKind == FBPostKind.UNKNOWN || otherPostKind == FBPostKind.UNKNOWN || selectedPostKind == otherPostKind) {
                 return new FBPostResult(other, new HashSet<>(), 0.0, otherPostKind);
             } else {
                 postKind = otherPostKind;
