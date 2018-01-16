@@ -9,7 +9,9 @@ import {Subscription} from "rxjs/Subscription";
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy {
-
+  loading = false;
+  moreLoading = false;
+  allLoading = false;
   limit = 20;
   offset = 0;
   posts: Post[];
@@ -20,24 +22,30 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.posts = [];
+    this.loading = true;
     this.sub = this.restService.getPosts(this.limit, 0)
       .subscribe((data) => {
+        this.loading = false;
         this.posts = data;
       });
   }
 
   loadMore() {
     this.offset = this.posts.length;
+    this.moreLoading = true;
     this.sub = this.restService.getPosts(this.limit, this.offset)
       .subscribe((data) => {
+        this.moreLoading = false;
         this.posts = this.posts.concat(data);
       });
   }
 
   loadAll() {
     this.offset = this.posts.length;
+    this.allLoading = true;
     this.sub = this.restService.getPosts(Number.MAX_SAFE_INTEGER, this.offset)
       .subscribe((data) => {
+        this.allLoading = false;
         this.posts = this.posts.concat(data);
       });
   }
